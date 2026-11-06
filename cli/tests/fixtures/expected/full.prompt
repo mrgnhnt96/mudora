@@ -1,0 +1,28 @@
+Going to the team: a measured results report about the sync work, with {literal} braces.
+This is the first version. Review the whole page.
+<page_text>
+# Sync results
+Sync took 9 seconds.
+- First run
+- Second run
+## Next
+Ship it on Monday.
+Unchanged line one.
+Unchanged line two.
+Unchanged line three.
+Unchanged line four.
+Unchanged line five.
+Unchanged line six.
+Unchanged line seven.
+Last line, changed.
+</page_text>
+
+<type_checklist>
+This page is a measured results report. Questions specific to this type of page; report a failed one like any other finding:
+- Does every number say what it measures?
+</type_checklist>
+
+<rules>
+- Lead with the answer.
+- Write {braces} as they are.
+</rules>

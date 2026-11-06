@@ -1,0 +1,11 @@
+Going to the team: a report about plain, with {literal} braces.
+This is the first version. Review the whole page.
+<page_text>
+# No type here
+Just a page.
+</page_text>
+
+<rules>
+- Lead with the answer.
+- Write {braces} as they are.
+</rules>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html><head><title>Ignored? No: title is not a skipped tag</title>
+<style>p { color: red } </p></style>
+<script>if (a < b) document.write("<p>hidden</p>");</script>
+<meta name="mudora-type" content="data-report">
+</head><body>
+<!-- a comment > with a bracket -->
+<h1 title="  Heading tip  ">Fish &amp; chips &copy 2026 &notit; &#128; &#xD800;</h1>
+<p>Runs   of
+   space&nbsp;and&#32;a tab	here, 5 < 6 and 7 > 6.</p>
+<ul><li>one<li><b>two</b> <i aria-label='short &quot;label&quot;'>inline</i></ul>
+<details><summary>More</summary>Hidden until opened</details>
+<table><tr><td>a</td><td>b</td></tr></table>
+<svg><text>chart label</text></svg>
+<template><p>never shown</p></template>
+<noscript><p>no script</p></noscript>
+<span data-tip="a tip" data-tooltip="other">with tips</span>
+<br/>after<hr>rule<br>
+<x y='1' y="2" title=last>
+<a href=x/y/>slashes</a></ b ><p/>
+<![if !IE]>conditional<![endif]>
+<![CDATA[marked]]>
+end of page &am

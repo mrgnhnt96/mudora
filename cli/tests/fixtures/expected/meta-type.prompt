@@ -1,0 +1,34 @@
+Going to the team: a data report about edges, with {literal} braces.
+This is the first version. Review the whole page.
+<page_text>
+Ignored? No: title is not a skipped tag
+#
+[tip: Heading tip]
+Fish & chips © 2026 ¬it; € �
+Runs of space and a tab here, 5 < 6 and 7 > 6.
+- one
+- two
+[tip: short "label"]
+inline
+▸ More
+Hidden until opened
+ab
+[tip: a tip]
+[tip: other]
+with tips
+after
+rule
+[tip: last]
+slashes
+conditional end of page &am
+</page_text>
+
+<type_checklist>
+This page is a data report. Questions specific to this type of page; report a failed one like any other finding:
+- Does every number say what it measures?
+</type_checklist>
+
+<rules>
+- Lead with the answer.
+- Write {braces} as they are.
+</rules>

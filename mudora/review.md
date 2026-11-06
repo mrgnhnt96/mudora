@@ -2,7 +2,7 @@
 
 Every page gets read by a fresh reviewer before the user or the team sees it. The writer has been inside the work for hours and can't see what a newcomer trips on: a sentence that only makes sense from the experiment, a section that doesn't move the story forward, a claim that doesn't follow from the numbers next to it. The reviewer reads the page cold and only reports; the writer decides and fixes.
 
-The reviewer runs in a **headless Claude** (`claude -p`, started by `review_page.py`), not as a subagent, so the page text, the rules and the reviewer's reading stay out of the writing session. Only the short findings file comes back. Don't start the review with the Agent tool, and don't paste the page text into the session to "help" it.
+The reviewer runs in a **headless Claude** (`claude -p`, started by `mudora review`), not as a subagent, so the page text, the rules and the reviewer's reading stay out of the writing session. Only the short findings file comes back. Don't start the review with the Agent tool, and don't paste the page text into the session to "help" it.
 
 ## When to review, and how much
 
@@ -11,7 +11,7 @@ The reviewer runs in a **headless Claude** (`claude -p`, started by `review_page
 | First version of a page | **Full review** of the whole page |
 | The user asked for changes | **Diff review**: only what changed since the last reviewed version, plus anything the change broke elsewhere |
 | A full rewrite, or the diff touches most of the page | Full review |
-| The text diff is empty (layout, colour, spacing only) | No review (the script says so and stops); check the rendered layout as usual |
+| The text diff is empty (layout, colour, spacing only) | No review (the command says so and stops); check the rendered layout as usual |
 | The change is only the user's exact wording, pasted in | No review |
 
 ## "Review this doc: <link>"
@@ -20,7 +20,7 @@ The review only reports. The fixes are made by **the session that wrote the page
 
 1. Read the page with `Artifact` `action: "read"` (the full link, share key and all) and copy the saved file it names into the scratchpad as `page.html`. With the claude-artifacts MCP tools, use `read_artifact` and save the HTML it returns as `page.html`.
 2. Run a **full review** (no baseline) with `--link <the link>`. Fill in `--readers` and `--subject` from the page itself; the type comes from the page's `mudora-type` marker, or pass `--type` (see pages.md) for a page made before markers. Don't edit or republish the page yourself.
-3. Find the writer: `python3 ~/.claude/skills/mudora/find_doc_session.py "<link>"`. It prints the `conversation_id`, `cwd` and `source` file of the session that last published the page.
+3. Find the writer: `mudora find-session "<link>"`. It prints the `conversation_id`, `cwd` and `source` file of the session that last published the page.
 4. Hand the findings to that session:
    - If that session is still running where you can reach it, send it the message.
    - Otherwise resume it from its `cwd` with `claude --resume <conversation_id>` and the message as the prompt.
@@ -45,9 +45,9 @@ Diff review needs a baseline: the page as it was the last time it passed review.
 
 1. **Run the review.** Findings go to a file in the scratchpad; the command prints only the count.
    - Full review:
-     `python3 ~/.claude/skills/mudora/review_page.py page.html --readers "<who reads it>" --type <type from SKILL.md's type table, if the page has no marker> --subject "<one plain line>" --link "<the page's link, once it has one>" --out <scratchpad>/review.md`
+     `mudora review page.html --readers "<who reads it>" --type <type from SKILL.md's type table, if the page has no marker> --subject "<one plain line>" --link "<the page's link, once it has one>" --out <scratchpad>/review.md`
    - Diff review: add `--baseline page.reviewed.html --request "<the user's request, verbatim>"`.
-   - If the page builds text from script data (chart labels, tips, cards rendered by JS), the extractor can't see it. Write those strings (only the changed ones, for a diff review) to a file and pass `--extra <file>`.
+   - If the page builds text from script data (chart labels, tips, cards rendered by JS), the text extractor can't see it. Write those strings (only the changed ones, for a diff review) to a file and pass `--extra <file>`.
    - Give `--subject` as a plain description of the page, not your opinion of it or what you think is wrong. The reviewer reads the page, not your view of it.
    - Run it with a long Bash timeout (up to 15 minutes); a review usually takes under a minute.
 2. **Read the findings file and decide each finding.** A finding is a lead, not an order. Fix it, or drop it with a reason. Drop anything that would undo what the user asked for, or break a rule in SKILL.md. A finding that a claim looks unsupported means checking it against the code or data (rule 8), not rewording it.
@@ -62,8 +62,10 @@ Diff review needs a baseline: the page as it was the last time it passed review.
 
 ## Files
 
-- `review_page.py` extracts the page text and the diff, fills in `reviewer-prompt.md` with them, the "Rules for every page" section of SKILL.md and the Checklist of the page's type file, runs the headless reviewer with no write, shell or web tools, and writes its reply to `--out`.
-- `review-log.md` is the global log of findings and decisions; `review_page.py` appends to it.
-- `find_doc_session.py <link>` finds the session that last published a page, from the Claude transcripts. It recognises the `Artifact` tool and the claude-artifacts MCP tools. `source` is empty when the page was sent inline; use the live page then.
-- `page_text.py` is the text extractor (`page_text.py page.html` prints what a reader sees; `page_text.py old.html new.html` prints the text diff).
-- `reviewer-prompt.md` is what the reviewer is asked. Change the questions there, not in the script.
+`mudora` is the Rust command in `cli/` (install: INSTALL.md). It reads `reviewer-prompt.md`, SKILL.md and `types/` from the skill folder, `~/.claude/skills/mudora` by default or `--skill-dir <dir>`.
+
+- `mudora review` extracts the page text and the diff, fills in `reviewer-prompt.md` with them, the "Rules for every page" section of SKILL.md and the Checklist of the page's type file, runs the headless reviewer lean (no user settings, plugins, MCP servers or tools), writes its reply to `--out` and prints only the finding count. It appends the entry to `review-log.md`.
+- `review-log.md` is the global log of findings and decisions; `mudora review` appends to it.
+- `mudora find-session <link>` finds the session that last published a page, from the Claude transcripts. It recognises the `Artifact` tool and the claude-artifacts MCP tools. `source` is empty when the page was sent inline; use the live page then.
+- `mudora page-text page.html` prints what a reader sees; `mudora page-text old.html new.html` prints the text diff.
+- `reviewer-prompt.md` is what the reviewer is asked. Change the questions there, not in the code.
