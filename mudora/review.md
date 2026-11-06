@@ -18,7 +18,7 @@ The reviewer runs in a **headless Claude** (`claude -p`, started by `review_page
 
 The review only reports. The fixes are made by **the session that wrote the page** (the one that last published it), because it has the context: the code, the data, what the user asked for. Nobody asks the user for permission at any point; a request to review is a request to fix.
 
-1. Read the page with `Artifact` `action: "read"` (the full link, share key and all). Copy the saved file it names into the scratchpad as `page.html`.
+1. Read the page with `Artifact` `action: "read"` (the full link, share key and all) and copy the saved file it names into the scratchpad as `page.html`. With the claude-artifacts MCP tools, use `read_artifact` and save the HTML it returns as `page.html`.
 2. Run a **full review** (no baseline) with `--link <the link>`. Fill in `--readers` and `--subject` from the page itself; the type comes from the page's `mudora-type` marker, or pass `--type` (see pages.md) for a page made before markers. Don't edit or republish the page yourself.
 3. Find the writer: `python3 ~/.claude/skills/mudora/find_doc_session.py "<link>"`. It prints the `conversation_id`, `cwd` and `source` file of the session that last published the page.
 4. Hand the findings to that session:
@@ -39,7 +39,7 @@ Load the mudora skill. Decide each finding (fix it, or drop it with a reason), a
 Diff review needs a baseline: the page as it was the last time it passed review.
 
 - After a review passes and the page is published, copy the published file next to it as `<name>.reviewed.html` (overwrite the old one). This is the baseline for the next round.
-- If there's no `.reviewed.html` (a new session, or the source lives elsewhere), read the live page with `Artifact` `action: "read"` and use the saved file it names as the baseline. The live page was reviewed before it went out, so it's a fair baseline.
+- If there's no `.reviewed.html` (a new session, or the source lives elsewhere), read the live page (`Artifact` `action: "read"`, or `read_artifact`) and use that HTML as the baseline. The live page was reviewed before it went out, so it's a fair baseline.
 
 ## Steps
 
@@ -64,6 +64,6 @@ Diff review needs a baseline: the page as it was the last time it passed review.
 
 - `review_page.py` extracts the page text and the diff, fills in `reviewer-prompt.md` with them, the "Rules for every page" section of SKILL.md and the Checklist of the page's type file, runs the headless reviewer with no write, shell or web tools, and writes its reply to `--out`.
 - `review-log.md` is the global log of findings and decisions; `review_page.py` appends to it.
-- `find_doc_session.py <link>` finds the session that last published a page, from the Claude transcripts.
+- `find_doc_session.py <link>` finds the session that last published a page, from the Claude transcripts. It recognises the `Artifact` tool and the claude-artifacts MCP tools. `source` is empty when the page was sent inline; use the live page then.
 - `page_text.py` is the text extractor (`page_text.py page.html` prints what a reader sees; `page_text.py old.html new.html` prints the text diff).
 - `reviewer-prompt.md` is what the reviewer is asked. Change the questions there, not in the script.
