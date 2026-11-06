@@ -1,0 +1,29 @@
+Going to QA: a note about edges, with {literal} braces.
+This is the first version. Review the whole page.
+<page_text>
+Ignored? No: title is not a skipped tag
+#
+[tip: Heading tip]
+Fish & chips © 2026 ¬it; € �
+Runs of space and a tab here, 5 < 6 and 7 > 6.
+- one
+- two
+[tip: short "label"]
+inline
+▸ More
+Hidden until opened
+ab
+[tip: a tip]
+[tip: other]
+with tips
+after
+rule
+[tip: last]
+slashes
+conditional end of page &am
+</page_text>
+
+<rules>
+- Lead with the answer.
+- Write {braces} as they are.
+</rules>

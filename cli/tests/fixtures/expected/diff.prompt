@@ -1,0 +1,57 @@
+Going to the team: a measured results report about the sync work, with {literal} braces.
+This is a revision. The user asked for: "Use the new number".
+The changes since the last review are in <diff> (a unified diff of the visible text).
+Review only the changed lines, and the places the change affects: a TL;DR row or intro that
+now disagrees with a changed section, a removed section something still refers to, a term
+the change introduces without explaining, a section that no longer flows into the next.
+Use <page_text> only for that context. Don't report on unchanged parts of the page. Don't
+question what the user asked for; check that it was done well and fits the rest.
+<page_text>
+# Sync results
+Sync took 9 seconds.
+- First run
+- Second run
+## Next
+Ship it on Monday.
+Unchanged line one.
+Unchanged line two.
+Unchanged line three.
+Unchanged line four.
+Unchanged line five.
+Unchanged line six.
+Unchanged line seven.
+Last line, changed.
+</page_text>
+
+<diff>
+--- last reviewed
++++ now
+@@ -1,9 +1,9 @@
+ # Sync results
+-Sync took 12 seconds.
++Sync took 9 seconds.
+ - First run
+ - Second run
+ ## Next
+-Ship it on Friday.
++Ship it on Monday.
+ Unchanged line one.
+ Unchanged line two.
+ Unchanged line three.
+@@ -11,4 +11,4 @@
+ Unchanged line five.
+ Unchanged line six.
+ Unchanged line seven.
+-Last line.
++Last line, changed.
+</diff>
+
+<type_checklist>
+This page is a measured results report. Questions specific to this type of page; report a failed one like any other finding:
+- Does every number say what it measures?
+</type_checklist>
+
+<rules>
+- Lead with the answer.
+- Write {braces} as they are.
+</rules>

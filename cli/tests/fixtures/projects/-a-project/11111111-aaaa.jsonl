@@ -1,0 +1,13 @@
+{"message": {"content": [{"type": "tool_use", "id": "t1", "name": "Artifact", "input": {"file_path": "/work/one/page.html"}}]}, "timestamp": "2026-01-01T10:00:00Z", "cwd": "/work/one"}
+{"message": {"content": [{"type": "tool_result", "tool_use_id": "t1", "content": [{"type": "text", "text": "Published /work/one/page.html at https://claude.ai/artifact/aaa111"}]}]}, "timestamp": "2026-01-01T10:00:05Z"}
+this line is not json
+{"message": {"content": [{"type": "tool_use", "id": "t2", "name": "Artifact", "input": {"file_path": "/work/one/uploaded.html"}}]}, "timestamp": "2026-01-01T11:00:00Z", "cwd": "/work/one"}
+{"message": {"content": [{"type": "tool_result", "tool_use_id": "t2", "content": "saved to https://claude.ai/artifact/bbb222 é"}]}, "timestamp": "2026-01-01T11:00:05Z"}
+{"message": {"content": [{"type": "tool_use", "id": "t3", "name": "Artifact", "input": {"action": "publish", "asset": "img.png", "file_path": "/x"}}]}, "timestamp": "2026-01-01T12:00:00Z", "cwd": "/work/one"}
+{"message": {"content": [{"type": "tool_result", "tool_use_id": "t3", "content": "Published /x at https://claude.ai/artifact/assetonly"}]}, "timestamp": "2026-01-01T12:00:05Z"}
+{"message": {"content": [{"type": "tool_use", "id": "t4", "name": "mcp__claude-artifacts__publish_version", "input": {"content": "<html>"}}]}, "timestamp": "2026-01-01T13:00:00Z", "cwd": "/work/one"}
+{"message": {"content": [{"type": "tool_result", "tool_use_id": "t4", "content": [{"type": "text", "text": "{\"slug\": \"ccc333-uuid\"}"}]}]}, "timestamp": "2026-01-01T13:00:05Z"}
+{"message": {"content": [{"type": "tool_use", "id": "t5", "name": "Artifact", "input": {"file_path": "/x"}}]}, "timestamp": "2026-01-01T14:00:00Z", "cwd": "/work/one"}
+{"message": {"content": [{"type": "tool_result", "tool_use_id": "t5", "content": "artifact/errored failed", "is_error": true}]}, "timestamp": "2026-01-01T14:00:05Z"}
+{"message": {"content": [{"type": "tool_use", "id": "t6", "name": "Read", "input": {"file_path": "/x"}}]}, "timestamp": "2026-01-01T15:00:00Z", "cwd": "/work/one"}
+{"message": {"content": [{"type": "tool_result", "tool_use_id": "t6", "content": "mentions artifact/nothing"}]}, "timestamp": "2026-01-01T15:00:05Z"}

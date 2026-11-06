@@ -1,0 +1,21 @@
+[package]
+name = "mudora"
+version = "0.1.0"
+edition = "2024"
+description = "Reviews a mudora artifact page in a lean headless Claude"
+license = "MIT"
+publish = false
+
+[[bin]]
+name = "mudora"
+path = "src/main.rs"
+
+[dependencies]
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+clap = { version = "4", features = ["derive"] }
+fancy-regex = "0.14"
+regex = "1"
+serde_json = { version = "1", features = ["preserve_order"] }
+
+[dev-dependencies]
+tempfile = "3"

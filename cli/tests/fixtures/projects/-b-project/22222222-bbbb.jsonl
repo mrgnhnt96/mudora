@@ -1,0 +1,6 @@
+{"message": {"content": [{"type": "tool_use", "id": "u1", "name": "Artifact", "input": {"file_path": "/work/two/newer.html"}}]}, "timestamp": "2026-02-01T10:00:00Z", "cwd": "/work/two"}
+{"message": {"content": [{"type": "tool_result", "tool_use_id": "u1", "content": [{"type": "text", "text": "Published /work/two/newer.html at https://claude.ai/artifact/aaa111"}]}]}, "timestamp": "2026-02-01T10:00:05Z"}
+{"message": {"content": [{"type": "tool_use", "id": "u2", "name": "mcp__claude-artifacts__publish_files", "input": {"files": [{"as": "css/a.css", "path": "/work/two/a.css"}, {"as": "index.html", "path": "/work/two/index.html"}]}}]}, "timestamp": "2026-02-01T11:00:00Z", "cwd": "/work/two"}
+{"message": {"content": [{"type": "tool_result", "tool_use_id": "u2", "content": "ok ddd444"}]}, "timestamp": "2026-02-01T11:00:05Z"}
+{"message": {"content": [{"type": "tool_use", "id": "u3", "name": "mcp__claude-artifacts__edit_version", "input": {"edits": []}}]}, "timestamp": "2026-02-01T12:00:00Z", "cwd": "/work/two"}
+{"message": {"content": [{"type": "tool_result", "tool_use_id": "u3", "content": "ok eee555"}]}}

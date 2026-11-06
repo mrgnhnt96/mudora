@@ -1,0 +1,20 @@
+--- last reviewed
++++ now
+@@ -1,9 +1,9 @@
+ # Sync results
+-Sync took 12 seconds.
++Sync took 9 seconds.
+ - First run
+ - Second run
+ ## Next
+-Ship it on Friday.
++Ship it on Monday.
+ Unchanged line one.
+ Unchanged line two.
+ Unchanged line three.
+@@ -11,4 +11,4 @@
+ Unchanged line five.
+ Unchanged line six.
+ Unchanged line seven.
+-Last line.
++Last line, changed.
