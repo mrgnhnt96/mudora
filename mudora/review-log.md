@@ -1,6 +1,6 @@
 # Review log
 
-Every headless review appends its findings here (`review_page.py` does it). This is the one place review feedback is kept across sessions and projects, so the docs get better over time.
+Every headless review appends its findings here (`mudora review` does it). This is the one place review feedback is kept across sessions and projects, so the docs get better over time.
 
 How to use it:
 
