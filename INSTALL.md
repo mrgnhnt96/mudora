@@ -27,7 +27,7 @@ mudora is a Claude Code skill. It tells the agent how to build docs, reports, pl
 
 | Needs | Why |
 |---|---|
-| Claude Code with the **Artifact** tool (claude.ai account) | Every page is published as an artifact |
+| Claude Code with the **Artifact** tool or the claude-artifacts MCP tools (claude.ai account) | Every page is published as an artifact |
 | `python3` (3.9 or newer, standard library only) | review_page.py, page_text.py, find_doc_session.py, starters/sync_css.py |
 | The `claude` CLI on PATH | review_page.py runs a headless reviewer (`claude -p`) before each publish |
 

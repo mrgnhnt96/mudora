@@ -7,11 +7,36 @@ from pathlib import Path
 PROJECTS = Path.home() / ".claude" / "projects"
 SHORT_ID = re.compile(r"artifact/([A-Za-z0-9]+)")
 PUBLISHED = re.compile(r"Published (\S+) at (https://claude\.ai/\S+)")
+MCP_PUBLISH = re.compile(r"^mcp__.*artifacts.*__(publish_version|publish_files|edit_version)$")
 
 
 def artifact_ids(link):
     match = SHORT_ID.search(link)
     return {match.group(1)} if match else {link}
+
+
+def is_publish_tool(name):
+    return name == "Artifact" or bool(MCP_PUBLISH.match(name or ""))
+
+
+def is_page_publish(name, call):
+    if name == "Artifact":
+        return call.get("action", "publish") == "publish" and not call.get("asset")
+    return True
+
+
+def source_of(call, result_text):
+    published = PUBLISHED.search(result_text)
+    if published:
+        return published.group(1)
+    if call.get("file_path"):
+        return call["file_path"]
+    files = call.get("files")
+    if isinstance(files, list):
+        for file in files:
+            if isinstance(file, dict) and file.get("as") == "index.html":
+                return file.get("path")
+    return None
 
 
 def publishes_in(transcript, ids):
@@ -26,18 +51,19 @@ def publishes_in(transcript, ids):
         if not isinstance(content, list):
             continue
         for block in content:
-            if block.get("type") == "tool_use" and block.get("name") == "Artifact":
-                artifact_calls[block["id"]] = block.get("input", {})
+            if not isinstance(block, dict):
+                continue
+            if block.get("type") == "tool_use" and is_publish_tool(block.get("name")):
+                artifact_calls[block["id"]] = (block["name"], block.get("input", {}))
             elif block.get("type") == "tool_result" and block.get("tool_use_id") in artifact_calls:
-                call = artifact_calls[block["tool_use_id"]]
-                if call.get("action", "publish") != "publish" or call.get("asset"):
+                name, call = artifact_calls[block["tool_use_id"]]
+                if not is_page_publish(name, call) or block.get("is_error"):
                     continue
                 text = json.dumps(block.get("content"))
                 if any(i in text for i in ids):
-                    source = PUBLISHED.search(text)
                     found.append({
                         "time": entry.get("timestamp") or "",
-                        "source": source.group(1) if source else call.get("file_path"),
+                        "source": source_of(call, text),
                         "cwd": cwd,
                     })
     return found
