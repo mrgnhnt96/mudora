@@ -1,0 +1,582 @@
+<meta name="mudora-type" content="design-doc">
+<title>Name the Change in Plain Words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --bg: #F4F6F5;
+    --surface: #FFFFFF;
+    --surface-2: #EBEFED;
+    --ink: #1A2124;
+    --ink-2: #3C474C;
+    --muted: #5D696F;
+    --rule: #D6DDDA;
+    --accent: #1D6A85;
+    --accent-soft: #DCEBF1;
+    --alive: #2B7A4B;
+    --alive-soft: #DDEFE3;
+    --dormant: #8C979D;
+    --dormant-soft: #ECEFEE;
+    --warn: #A95B17;
+    --warn-soft: #F6E7D8;
+    --code-bg: #EEF2F0;
+    --display: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+    --body: "IBM Plex Sans", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #101517;
+      --surface: #172023;
+      --surface-2: #1D282C;
+      --ink: #E3EAEC;
+      --ink-2: #C3CDD0;
+      --muted: #93A1A7;
+      --rule: #2A363B;
+      --accent: #6DB8D3;
+      --accent-soft: #19323C;
+      --alive: #72C893;
+      --alive-soft: #173327;
+      --dormant: #66747A;
+      --dormant-soft: #1B2427;
+      --warn: #E6A06A;
+      --warn-soft: #3A2716;
+      --code-bg: #141C1F;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #101517;
+    --surface: #172023;
+    --surface-2: #1D282C;
+    --ink: #E3EAEC;
+    --ink-2: #C3CDD0;
+    --muted: #93A1A7;
+    --rule: #2A363B;
+    --accent: #6DB8D3;
+    --accent-soft: #19323C;
+    --alive: #72C893;
+    --alive-soft: #173327;
+    --dormant: #66747A;
+    --dormant-soft: #1B2427;
+    --warn: #E6A06A;
+    --warn-soft: #3A2716;
+    --code-bg: #141C1F;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-inline: 16px;
+    padding-block: 0 72px;
+  }
+  .shell {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+  @media (min-width: 1040px) {
+    .shell { grid-template-columns: 220px minmax(0, 1fr); }
+  }
+
+  /* Table of contents */
+  nav.toc { display: none; }
+  @media (min-width: 1040px) {
+    nav.toc {
+      display: block;
+      position: sticky;
+      top: calc(env(safe-area-inset-top, 0px) + 32px);
+      align-self: start;
+      padding-top: 40px;
+      font-size: 13.5px;
+    }
+  }
+  nav.toc .label {
+    font-family: var(--display);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  nav.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+  nav.toc a {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    color: var(--ink-2);
+    text-decoration: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  nav.toc a span { color: var(--muted); font-variant-numeric: tabular-nums; }
+  nav.toc a:hover { background: var(--surface-2); color: var(--ink); }
+  nav.toc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  main { max-width: 760px; min-width: 0; }
+
+  /* Header */
+  header.doc {
+    padding-top: 40px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 8px;
+  }
+  .eyebrow {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(30px, 5vw, 42px);
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+    margin: 10px 0 14px;
+    text-wrap: balance;
+  }
+  .lede { font-size: 18px; color: var(--ink-2); margin: 0 0 22px; max-width: 64ch; }
+  dl.meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px 24px;
+    margin: 0;
+    font-size: 14px;
+  }
+  dl.meta div { display: grid; gap: 2px; }
+  dl.meta dt {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  dl.meta dd { margin: 0; color: var(--ink); }
+  .pill {
+    display: inline-block;
+    padding: 1px 9px;
+    border-radius: 999px;
+    font-size: 12.5px;
+    font-weight: 500;
+    background: var(--warn-soft);
+    color: var(--warn);
+  }
+
+  /* Sections */
+  section { padding-top: 40px; scroll-margin-top: 16px; }
+  h2 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 1.2;
+    margin: 0 0 14px;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+    text-wrap: balance;
+  }
+  h2 .num {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+    min-width: 1.6em;
+  }
+  h4 { font-family: var(--display); font-weight: 600; font-size: 15.5px; margin: 22px 0 6px; color: var(--ink); }
+  h3 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 18px;
+    margin: 28px 0 8px;
+    text-wrap: balance;
+  }
+  p { margin: 0 0 14px; max-width: 68ch; }
+  ul, ol { margin: 0 0 14px; padding-left: 22px; max-width: 68ch; }
+  li { margin-bottom: 6px; }
+  li::marker { color: var(--muted); }
+  strong { font-weight: 600; }
+  a { color: var(--accent); }
+  code {
+    font-family: var(--mono);
+    font-size: 0.86em;
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 0 4px;
+    overflow-wrap: anywhere;
+  }
+  pre {
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.55;
+    background: var(--code-bg);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin: 0 0 18px;
+    overflow-x: auto;
+    color: var(--ink);
+  }
+  pre code { background: none; border: 0; padding: 0; font-size: inherit; overflow-wrap: normal; }
+  pre .c { color: var(--muted); }
+  pre .k { color: var(--accent); }
+  pre .s { color: var(--alive); }
+  details.code { margin: 0 0 18px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); }
+  details.code > summary { cursor: pointer; padding: 10px 14px; font-size: 14px; font-weight: 500; color: var(--ink-2); list-style: none; display: flex; align-items: center; gap: 8px; }
+  details.code > summary::-webkit-details-marker { display: none; }
+  details.code > summary::before { content: "\25B8"; color: var(--muted); transition: transform .15s; display: inline-block; }
+  details.code[open] > summary::before { transform: rotate(90deg); }
+  details.code > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 8px; }
+  details.code .code-body { padding: 0 14px 2px; }
+  details.code .code-body .checklist, details.code .code-body .table-wrap { margin-bottom: 14px; }
+  details.code + details.code { margin-top: -8px; }
+  #risks ul li .sev { margin-right: 4px; }
+  .tldr { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 4px 20px 8px; margin: 0 0 22px; }
+  .tldr h2 { margin-top: 16px; }
+  .tldr ul { margin-bottom: 8px; }
+  .file-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+
+  .callout {
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 0 0 18px;
+    max-width: 68ch;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout.warn { border-left-color: var(--warn); background: var(--warn-soft); }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 0 0 20px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; line-height: 1.5; }
+  th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--rule); }
+  tr:last-child td { border-bottom: 0; }
+  th {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    background: var(--surface-2);
+    white-space: nowrap;
+  }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td code { font-size: 12.5px; }
+
+  /* Stack diagram */
+  .stack-compare {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+    margin: 6px 0 12px;
+  }
+  figure.stack { margin: 0; }
+  figure.stack figcaption {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  figure.stack figcaption span { font-family: var(--body); font-weight: 400; color: var(--muted); font-size: 13px; }
+  .stack ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-width: none; }
+  .stack li {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--rule);
+    background: var(--surface);
+    font-size: 14px;
+  }
+  .stack li .route { font-family: var(--mono); font-size: 13px; }
+  .stack li .route small { display: block; font-family: var(--body); font-size: 12px; color: var(--muted); }
+  .tag {
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .tag.alive { background: var(--alive-soft); color: var(--alive); }
+  .tag.dormant { background: var(--dormant-soft); color: var(--dormant); border: 1px dashed var(--dormant); }
+  .tag.sheet { background: var(--accent-soft); color: var(--accent); }
+  .stack li.is-dormant { background: var(--dormant-soft); border-style: dashed; }
+  .stack li.is-dormant .route { color: var(--muted); }
+  .stack li.is-sheet { margin-inline: 14px; }
+  .stack li.window-row { display: block; padding: 0; border: 0; background: none; }
+  .stack .window {
+    border: 2px solid var(--alive);
+    border-radius: 10px;
+    padding: 6px;
+    display: grid;
+    gap: 6px;
+    position: relative;
+  }
+  .stack .window-label {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--alive);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0 4px;
+  }
+  .stack-note { font-size: 13px; color: var(--muted); margin-top: 8px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; color: var(--muted); margin: 4px 0 18px; }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+  /* Checklists */
+  .checklist { list-style: none; padding: 0; margin: 0 0 18px; display: grid; gap: 0; max-width: none; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); }
+  .checklist li { margin: 0; border-bottom: 1px solid var(--rule); }
+  .checklist li:last-child { border-bottom: 0; }
+  .checklist label {
+    display: grid;
+    grid-template-columns: 20px 1fr;
+    gap: 12px;
+    padding: 11px 14px;
+    cursor: pointer;
+    font-size: 14.5px;
+  }
+  .checklist input {
+    width: 17px; height: 17px; margin: 3px 0 0;
+    accent-color: var(--alive);
+  }
+  .checklist input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .checklist .t { display: block; font-weight: 500; }
+  .checklist .d { display: block; color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+  .checklist input:checked + span .t { text-decoration: line-through; text-decoration-color: var(--muted); color: var(--muted); }
+  .check-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 13px; color: var(--muted); margin: -4px 0 18px; }
+  .check-meta button {
+    font: inherit;
+    font-size: 13px;
+    color: var(--ink-2);
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .check-meta button:hover { background: var(--surface-2); }
+  .check-meta button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .progress { font-variant-numeric: tabular-nums; }
+
+  .sev { font-size: 11.5px; font-weight: 600; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+  .sev.high { background: var(--warn-soft); color: var(--warn); }
+  .sev.med { background: var(--accent-soft); color: var(--accent); }
+  .sev.low { background: var(--dormant-soft); color: var(--muted); }
+  .plat { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .02em; padding: 1px 7px; border-radius: 999px; white-space: nowrap; vertical-align: 1px; margin-right: 4px; }
+  .plat.and { background: var(--alive-soft); color: var(--alive); }
+  .plat.ios { background: var(--accent-soft); color: var(--accent); }
+  .plat.both { background: var(--dormant-soft); color: var(--ink-2); }
+  .stack-compare.tabs figcaption span { white-space: nowrap; }
+
+  footer.doc { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 13px; color: var(--muted); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { scroll-behavior: auto !important; transition: none !important; }
+  }
+  html { scroll-behavior: smooth; }
+</style>
+
+<div class="shell">
+  <nav class="toc" aria-label="Contents">
+    <div class="label">Contents</div>
+    <ol>
+      <li><a href="#tldr"><span>·</span>TL;DR</a></li>
+      <li><a href="#problem"><span>1</span>Problem</a></li>
+      <li><a href="#solution"><span>2</span>Solution</a></li>
+      <li><a href="#changes"><span>3</span>What changes</a></li>
+      <li><a href="#risks"><span>4</span>Risks</a></li>
+      <li><a href="#testing"><span>5</span>Testing</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="doc">
+      <div class="eyebrow">Product area · design doc</div>
+      <h1>Name the Change in Plain Words</h1>
+      <p class="lede">One sentence on what changes and why it matters.</p>
+      <dl class="meta">
+        <div><dt>Status</dt><dd><span class="pill">Draft for review</span></dd></div>
+        <div><dt>Owner</dt><dd>Name</dd></div>
+        <div><dt>Updated</dt><dd>YYYY-MM-DD</dd></div>
+        <div><dt>Platforms</dt><dd>Name the platform</dd></div>
+      </dl>
+    </header>
+
+    <section id="tldr" class="tldr">
+      <h2>TL;DR</h2>
+      <ul>
+        <li><strong>Problem.</strong> What goes wrong today, with the key number, in one sentence.</li>
+        <li><strong>Fix.</strong> The idea behind the change, in one sentence.</li>
+        <li><strong>What users notice.</strong> What looks or behaves differently, or "Nothing".</li>
+        <li><strong>How we know it worked.</strong> The test or measurement that proves it.</li>
+      </ul>
+    </section>
+
+    <section id="problem">
+      <h2><span class="num">1</span>Problem</h2>
+      <p>A short paragraph with <strong>the key numbers in plain words</strong>. Say what goes wrong and who it reaches.</p>
+      <ul>
+        <li>One visible effect of the problem.</li>
+        <li>A second visible effect.</li>
+      </ul>
+      <p><strong>Why:</strong> the cause in one or two plain sentences.</p>
+      <h3>A real example</h3>
+      <p>A short, everyday path through the product, and what happens on it.</p>
+      <details class="code">
+        <summary>Measurements</summary>
+        <div class="code-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Measured</th><th class="n">Before</th><th class="n">After</th></tr></thead>
+              <tbody>
+                <tr><td>First measure</td><td class="n">0</td><td class="n"><strong>0</strong></td></tr>
+                <tr><td>Second measure</td><td class="n">0</td><td class="n"><strong>0</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section id="solution">
+      <h2><span class="num">2</span>Solution</h2>
+      <ul>
+        <li><strong>The main idea.</strong> What it does, in one or two plain sentences.</li>
+        <li><strong>A second part of the idea.</strong> Keep these to a few short bullets.</li>
+        <li><strong>Keep it fixed.</strong> What stops the problem coming back.</li>
+      </ul>
+      <p>One line on what stays the same for the user.</p>
+      <details class="code">
+        <summary>Code</summary>
+        <div class="code-body">
+          <p class="file-label">path/to/file (new)</p>
+<pre><code><span class="c">// Only the code a reviewer needs to see. It stays in this closed section.</span>
+<span class="k">function</span> example(input) {
+  <span class="k">return</span> <span class="s">'result'</span>;
+}</code></pre>
+        </div>
+      </details>
+    </section>
+
+    <section id="changes">
+      <h2><span class="num">3</span>What changes</h2>
+      <ul>
+        <li>A plain bullet for each change, a handful at most.</li>
+        <li>A second change.</li>
+      </ul>
+      <details class="code">
+        <summary>File by file</summary>
+        <div class="code-body">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Where</th><th>Change</th></tr></thead>
+              <tbody>
+                <tr><td><code>path/to/file</code></td><td>What changes in this file.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </details>
+    </section>
+
+    <section id="risks">
+      <h2><span class="num">4</span>Risks</h2>
+      <ul>
+        <li><span class="sev high">High</span> <strong>A risk specific to this work.</strong> How it's handled, in one line.</li>
+        <li><span class="sev med">Medium</span> <strong>A second risk.</strong> How it's handled, in one line.</li>
+      </ul>
+    </section>
+
+    <section id="testing">
+      <h2><span class="num">5</span>Testing</h2>
+      <p><strong>To pass:</strong></p>
+      <ul>
+        <li>The result that proves the fix works.</li>
+        <li>Everything else behaves as it does today.</li>
+      </ul>
+      <details class="code">
+        <summary>Unit tests (2)</summary>
+        <div class="code-body">
+          <ul class="checklist">
+            <li><label><input type="checkbox" id="u1"><span><span class="t">The first thing to test</span></span></label></li>
+            <li><label><input type="checkbox" id="u2"><span><span class="t">The second thing to test</span><span class="d">A short note on what passing looks like.</span></span></label></li>
+          </ul>
+        </div>
+      </details>
+      <details class="code">
+        <summary>Manual QA (2)</summary>
+        <div class="code-body">
+          <ul class="checklist">
+            <li><label><input type="checkbox" id="m1"><span><span class="t">The main path, start to finish</span><span class="d">What should happen.</span></span></label></li>
+            <li><label><input type="checkbox" id="m2"><span><span class="t">A failure path</span></span></label></li>
+          </ul>
+        </div>
+      </details>
+      <div class="check-meta">
+        <span>Your ticks are saved in this browser only. <span class="progress" id="progress"></span></span>
+        <button type="button" id="reset-checks">Clear ticks</button>
+      </div>
+    </section>
+
+    <footer class="doc">
+      Based on the measurements and the current code. No code has been changed yet.
+    </footer>
+  </main>
+
+</div>
+
+<script>
+  (function () {
+    var KEY = "design-doc-checks";
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('.checklist input[type="checkbox"]'));
+    var progress = document.getElementById("progress");
+    var saved = {};
+    try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
+
+    function update() {
+      var done = boxes.filter(function (b) { return b.checked; }).length;
+      progress.textContent = done + " of " + boxes.length + " done";
+    }
+    function save() {
+      var state = {};
+      boxes.forEach(function (b) { if (b.checked) state[b.id] = true; });
+      try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {}
+    }
+
+    boxes.forEach(function (b) {
+      if (saved[b.id]) b.checked = true;
+      b.addEventListener("change", function () { save(); update(); });
+    });
+    document.getElementById("reset-checks").addEventListener("click", function () {
+      boxes.forEach(function (b) { b.checked = false; });
+      save();
+      update();
+    });
+    update();
+  })();
+</script>
