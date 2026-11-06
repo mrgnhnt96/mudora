@@ -17,7 +17,7 @@ mudora is a Claude Code skill. It tells the agent how to build docs, reports, pl
    ```
    ## Docs are artifact pages, never Claude Docs
 
-   When I ask for any doc, document, page, report, handoff, what's-new note, guide, plan, explainer, presentation or deck — for me or for someone else to read — load the `mudora` skill first and build the page with the Artifact tool, following that skill.
+   Whenever an artifact is created or changed, and whenever I ask for any doc, document, page, report, handoff, what's-new note, guide, plan, explainer, presentation or deck — for me or for someone else to read — load the `mudora` skill first, before any other step, and build the page with the Artifact tool, following that skill.
 
    Never use the Claude Docs connector (`mcp__claude_ai_Claude_Docs__*`, the `docs` skill), even when the request says "doc" and the docs skill says it is the default. Only use Claude Docs if I name Claude Docs.
    ```
