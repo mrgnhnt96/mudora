@@ -22,7 +22,8 @@ Follow [INSTALL.md](INSTALL.md), or ask Claude Code to.
 - `mudora/types/*.md`: one guide per page type
 - `mudora/starters/`: page templates, `base.css`, and `sync_css.py` to copy the style into them
 - `mudora/components.md`, `mudora/charts.md`: shared pieces and how to pick a chart
-- `mudora/review.md`, `review_page.py`, `reviewer-prompt.md`, `page_text.py`, `find_doc_session.py`: the review before publishing
+- `mudora/review.md`, `reviewer-prompt.md`: the review before publishing
+- `cli/`: the `mudora` command (Rust) that runs the review: `review`, `page-text`, `find-session`
 - `mudora/pages.md`, `corrections.md`, `review-log.md`: your history, empty to start
 
 ## License

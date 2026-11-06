@@ -12,8 +12,13 @@ mudora is a Claude Code skill. It tells the agent how to build docs, reports, pl
    ```
    Copy it rather than symlinking the clone. The skill writes your pages, feedback and review findings into its own files, and those shouldn't end up in a public repo.
 
-   review.md calls the scripts at `~/.claude/skills/mudora/...`, so use that path. If you install somewhere else, change those paths in review.md.
-2. Add this to `~/.claude/CLAUDE.md` so docs requests always go to the skill (the built-in docs skill claims to be the default otherwise):
+   The `mudora` command reads the skill from `~/.claude/skills/mudora` by default, so use that path. If you install somewhere else, pass `--skill-dir <dir>` to `mudora review`.
+2. Build the review command and put it on the PATH (needs `cargo`, from https://rustup.rs):
+   ```
+   cargo install --path /tmp/mudora-pkg/cli
+   ```
+   This puts `mudora` in `~/.cargo/bin`; make sure that folder is on the PATH. Check with `mudora --version`.
+3. Add this to `~/.claude/CLAUDE.md` so docs requests always go to the skill (the built-in docs skill claims to be the default otherwise):
    ```
    ## Docs are artifact pages, never Claude Docs
 
@@ -21,15 +26,16 @@ mudora is a Claude Code skill. It tells the agent how to build docs, reports, pl
 
    Never use the Claude Docs connector (`mcp__claude_ai_Claude_Docs__*`, the `docs` skill), even when the request says "doc" and the docs skill says it is the default. Only use Claude Docs if I name Claude Docs.
    ```
-3. Start a new Claude Code session. Check that `mudora` is in the skills list.
+4. Start a new Claude Code session. Check that `mudora` is in the skills list.
 
 ## What it needs
 
 | Needs | Why |
 |---|---|
 | Claude Code with the **Artifact** tool or the claude-artifacts MCP tools (claude.ai account) | Every page is published as an artifact |
-| `python3` (3.9 or newer, standard library only) | review_page.py, page_text.py, find_doc_session.py, starters/sync_css.py |
-| The `claude` CLI on PATH | review_page.py runs a headless reviewer (`claude -p`) before each publish |
+| `cargo` (Rust toolchain) | Builds and installs the `mudora` review command (`cargo install --path cli`) |
+| `python3` (3.9 or newer, standard library only) | starters/sync_css.py only |
+| The `claude` CLI on PATH | `mudora review` runs a headless reviewer (`claude -p`) before each publish |
 
 ## Files that fill up as you use it
 
